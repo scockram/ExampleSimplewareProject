@@ -1,0 +1,18 @@
+CSC="C:\Windows\Microsoft.NET\Framework\v4.0.30319\csc.exe"
+SOURCES=*.cs
+EXECUTABLE=Build\App.exe
+NATIVEDLL=SimpleITKCSharpNative.dll
+MANAGEDDLL=SimpleITKCSharpManaged.dll
+DLLS=$(MANAGEDDLL) ScanIP.dll
+
+all: clean $(EXECUTABLE) dllcopy
+
+$(EXECUTABLE):
+	@$(CSC) /target:exe /out:$(EXECUTABLE) $(DLLS:%=/reference:Resources/%) /recurse:Extensions\*.cs /warn:0 $(SOURCES)
+
+clean:
+	del /Q Build\*
+
+dllcopy:
+	xcopy Resources\\*.dll Build\
+
